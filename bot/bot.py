@@ -1,5 +1,5 @@
-from utils.config_reader import ConfigReader
 from dotenv import load_dotenv
+from utils.config_reader import ConfigReader
 
 
 def load_env():

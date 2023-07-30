@@ -1,8 +1,8 @@
 import urllib.request
-import os.path
 import hashlib
 import tempfile
 from urllib.parse import urlparse
+from pathlib import Path
 
 
 class File:
@@ -14,10 +14,17 @@ class File:
 
     def getFileName(self):
         path = urlparse(self.url).path
-        self.fileName = os.path.basename(path)
+        self.fileName = Path(path).name
 
     def getHash(self):
         with tempfile.NamedTemporaryFile() as file:
-            file.write(urllib.request.urlopen(self.url).read())
-            file.seek(0)
-            return hashlib.sha256(file.read()).hexdigest()
+            try:
+                file.write(urllib.request.urlopen(self.url).read())
+                file.seek(0)
+                return hashlib.sha256(file.read()).hexdigest()
+            except urllib.error.HTTPError as exc:
+                print(f"Error while downloading file: {exc}")
+                return None
+            except Exception as exc:
+                print(f"Error while hashing file: {exc}")
+                return None
