@@ -4,6 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["Kyuzial <kyuzial@protonmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "bot" },
+    { include = "filetracker" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
