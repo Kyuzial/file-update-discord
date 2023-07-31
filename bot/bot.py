@@ -1,29 +1,21 @@
-from dotenv import load_dotenv
-from utils.config_reader import ConfigReader
+import os
+
+import discord
+from discord.ext import commands
+from utils.config_reader import ConfigReader, load_env
+
+config = ConfigReader()
+botConfig = config.get("bot")
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix=botConfig["prefix"], intents=intents)
 
 
-def load_env():
-    """Load environment variables from .env file"""
-    try:
-        load_dotenv()
-    except FileNotFoundError as exc:
-        raise FileNotFoundError("Env file not found") from exc
-    except Exception as exc:
-        raise Exception("Error loading env file") from exc
-
-
-def load_config():
-    """Load config file"""
-    try:
-        config = ConfigReader()
-        config.read_config()
-    except FileNotFoundError as exc:
-        raise FileNotFoundError("Config file not found") from exc
-    except Exception as exc:
-        raise Exception("Error loading config file") from exc
-    return config
+@bot.command()
+async def ping(ctx):
+    embed = discord.Embed(description=(f"Pong!"), colour=discord.Colour.purple())
+    await ctx.send(embed=embed)
 
 
 if __name__ == "__main__":
     load_env()
-    load_config()
+    bot.run(os.getenv("SECRET_KEY"))

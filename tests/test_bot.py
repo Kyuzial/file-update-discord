@@ -1,7 +1,8 @@
 import pytest
-from bot.bot import load_config
+
+from bot.utils.config_reader import ConfigReader
 
 
-def test_load_env():
+def test_load_config():
     with pytest.raises(FileNotFoundError):
-        load_config
+        ConfigReader("does_not_exist.toml")

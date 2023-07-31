@@ -1,8 +1,8 @@
-import urllib.request
 import hashlib
 import tempfile
-from urllib.parse import urlparse
+import urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 class File:
