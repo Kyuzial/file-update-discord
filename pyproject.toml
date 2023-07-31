@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 discord-py = "^2.3.1"
 toml = "^0.10.2"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.280"
