@@ -4,6 +4,8 @@ import discord
 from discord.ext import commands
 from utils.config_reader import ConfigReader, load_env
 
+import filetracker.filetracker as ft
+
 config = ConfigReader()
 botConfig = config.get("bot")
 intents = discord.Intents.all()
@@ -12,8 +14,14 @@ bot = commands.Bot(command_prefix=botConfig["prefix"], intents=intents)
 
 @bot.command()
 async def ping(ctx):
-    embed = discord.Embed(description=(f"Pong!"), colour=discord.Colour.purple())
+    embed = discord.Embed(description=("Pong!"), colour=discord.Colour.purple())
     await ctx.send(embed=embed)
+
+
+@bot.command()
+async def track(ctx, arg):
+    file = ft.File(arg)
+    await ctx.send(f"Tracking {arg}\nInformations {file.hash}{file.fileName}")
 
 
 if __name__ == "__main__":
