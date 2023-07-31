@@ -7,7 +7,11 @@ from urllib.parse import urlparse
 
 class File:
     def __init__(self, url):
-        self.url = url
+        result = urlparse(url)
+        if all([result.scheme, result.netloc]):
+            self.url = url
+        else:
+            raise ValueError("Invalid URL")
         self.fileName = None
         self.getFileName()
         self.hash = self.getHash()
