@@ -1,2 +1,5 @@
 [bot]
 prefix = "!"
+
+[filetracker]
+dbPath = "filetracker.db"
