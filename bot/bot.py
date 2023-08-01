@@ -19,13 +19,13 @@ async def ping(ctx):
 
 
 @bot.command()
-async def track(ctx, arg):
+async def track(ctx, url):
     try:
-        file = ft.File(arg)
+        file = ft.File(url, ctx.author)
     except ValueError:
-        await ctx.send(f"Invalid URL: {arg}")
+        await ctx.send(f"Invalid URL: {url}")
         return
-    await ctx.send(f"Tracking {arg}\nInformations {file.hash}{file.fileName}")
+    await ctx.send(f"Tracking {url}\nInformations {file.hash}{file.fileName}")
 
 
 if __name__ == "__main__":

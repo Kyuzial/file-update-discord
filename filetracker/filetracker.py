@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 
 
 class File:
-    def __init__(self, url):
+    def __init__(self, url, author):
         result = urlparse(url)
         if all([result.scheme, result.netloc]):
             self.url = url
@@ -15,6 +15,7 @@ class File:
         self.fileName = None
         self.getFileName()
         self.hash = self.getHash()
+        self.author = author
 
     def getFileName(self):
         path = urlparse(self.url).path
