@@ -5,8 +5,7 @@ description = ""
 authors = ["Kyuzial <kyuzial@protonmail.com>"]
 readme = "README.md"
 packages = [
-    { include = "bot" },
-    { include = "filetracker" },
+    { include = "file_update_discord", from = "src"},
 ]
 
 [tool.poetry.dependencies]
@@ -23,6 +22,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-pythonpath = [
-  "bot", "filetracker",
-]
+pythonpath = ["src"]

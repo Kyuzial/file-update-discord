@@ -1,10 +1,9 @@
 import os
 
 import discord
+import file_update_discord.filetracker.filetracker as ft
 from discord.ext import commands
-from utils.config_reader import ConfigReader, load_env
-
-import filetracker.filetracker as ft
+from file_update_discord.utils.config_reader import ConfigReader, load_env
 
 config = ConfigReader()
 botConfig = config.get("bot")

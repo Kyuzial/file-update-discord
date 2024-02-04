@@ -1,8 +1,7 @@
 import pytest
-
-from bot.utils.config_reader import ConfigReader
+from file_update_discord.utils import config_reader
 
 
 def test_load_config():
     with pytest.raises(FileNotFoundError):
-        ConfigReader("does_not_exist.toml")
+        config_reader.ConfigReader("nonexistent.toml")

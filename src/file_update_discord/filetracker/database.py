@@ -1,6 +1,6 @@
 import sqlite3
 
-from bot.utils.config_reader import ConfigReader
+from file_update_discord.utils import ConfigReader
 
 config = ConfigReader()
 dbConfig = config.get("filetracker")
