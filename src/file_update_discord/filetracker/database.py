@@ -32,6 +32,20 @@ class Database(object):
         self.cursor.execute("SELECT * FROM files WHERE url=?", [url])
         return self.cursor.fetchone() is not None
 
+    def remove_file(self, url):
+        if not self.file_exists(url):
+            raise ValueError(f"URL {url} is not tracked")
+        else:
+            self.cursor.execute("DELETE FROM files WHERE url=?", [url])
+            self.connection.commit()
+
+    def get_author(self, url):
+        if not self.file_exists(url):
+            raise ValueError(f"URL {url} is not tracked")
+        else:
+            self.cursor.execute("SELECT userId FROM files WHERE url=?", [url])
+            return self.cursor.fetchone()[0]
+
     def __enter__(self):
         return self
 

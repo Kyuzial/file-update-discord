@@ -35,6 +35,20 @@ async def track(ctx, url):
     await ctx.send(f"Tracking {url}\nInformations {file.hash}")
 
 
+@bot.command()
+async def untrack(ctx, url):
+    try:
+        if ctx.author.id != dbSession.get_author(url):
+            await ctx.send(f"URL {url} is not tracked by you")
+            return
+        else:
+            dbSession.remove_file(url)
+            await ctx.send(f"URL {url} is no longer tracked")
+    except ValueError as exc:
+        await ctx.send(exc)
+        return
+
+
 if __name__ == "__main__":
     load_env()
     bot.run(os.getenv("SECRET_KEY"))
