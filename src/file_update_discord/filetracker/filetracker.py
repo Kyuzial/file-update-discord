@@ -15,7 +15,7 @@ class File:
         self.fileName = None
         self.getFileName()
         self.hash = self.getHash()
-        self.author = author
+        self.userId = author.id
 
     def getFileName(self):
         path = urlparse(self.url).path
