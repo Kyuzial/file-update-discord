@@ -5,6 +5,14 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 
+class FileDownloadError(Exception):
+    pass
+
+
+class FileHashError(Exception):
+    pass
+
+
 class File:
     def __init__(self, url, author):
         result = urlparse(url)
@@ -28,8 +36,6 @@ class File:
                 file.seek(0)
                 return hashlib.sha256(file.read()).hexdigest()
             except urllib.error.HTTPError as exc:
-                print(f"Error while downloading file: {exc}")
-                return None
+                raise FileDownloadError(f"Error while downloading file: {exc}")
             except Exception as exc:
-                print(f"Error while hashing file: {exc}")
-                return None
+                raise FileHashError(f"Error while hashing file: {exc}")

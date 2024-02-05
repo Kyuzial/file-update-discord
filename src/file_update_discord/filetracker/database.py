@@ -12,11 +12,11 @@ class Database(object):
         self.connection = sqlite3.connect(self.DATABASE)
         self.cursor = self.connection.cursor()
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS files (hash TEXT, url TEXT, fileName TEXT, userId INT)"
+            "CREATE TABLE IF NOT EXISTS files "
+            "(hash TEXT, url TEXT, fileName TEXT, userId INT)"
         )
 
     def add_file(self, file):
-        print(file.userId)
         self.cursor.execute(
             "INSERT INTO files (hash, url, fileName, userId) VALUES (?, ?, ?, ?)",
             (file.hash, file.url, file.fileName, file.userId),

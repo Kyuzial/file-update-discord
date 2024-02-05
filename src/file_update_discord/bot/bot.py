@@ -1,16 +1,17 @@
 import os
 
 import discord
-import file_update_discord.filetracker.filetracker as ft
 import file_update_discord.filetracker.database as db
+import file_update_discord.filetracker.filetracker as ft
 from discord.ext import commands
 from file_update_discord.utils.config_reader import ConfigReader, load_env
-
 
 config = ConfigReader()
 botConfig = config.get("bot")
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=botConfig["prefix"], intents=intents)
+
+dbSession = db.Database()
 
 
 @bot.command()
@@ -22,7 +23,6 @@ async def ping(ctx):
 @bot.command()
 async def track(ctx, url):
     try:
-        dbSession = db.Database()
         if dbSession.file_exists(url):
             await ctx.send(f"URL {url} is already tracked")
             return
@@ -32,7 +32,7 @@ async def track(ctx, url):
     except ValueError:
         await ctx.send(f"Invalid URL: {url}")
         return
-    await ctx.send(f"Tracking {url}\nInformations {file.hash}{file.fileName}")
+    await ctx.send(f"Tracking {url}\nInformations {file.hash}")
 
 
 if __name__ == "__main__":
