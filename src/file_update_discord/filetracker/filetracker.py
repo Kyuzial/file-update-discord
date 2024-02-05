@@ -4,6 +4,8 @@ import urllib.request
 from pathlib import Path
 from urllib.parse import urlparse
 
+import validators
+
 
 class FileDownloadError(Exception):
     pass
@@ -15,15 +17,14 @@ class FileHashError(Exception):
 
 class File:
     def __init__(self, url, author):
-        result = urlparse(url)
-        if all([result.scheme, result.netloc]):
-            self.url = url
+        if not validators.url(url):
+            raise ValueError(f"Invalid URL: {url}")
         else:
-            raise ValueError("Invalid URL")
-        self.fileName = None
-        self.getFileName()
-        self.hash = self.getHash()
-        self.userId = author.id
+            self.url = url
+            self.fileName = None
+            self.getFileName()
+            self.hash = self.getHash()
+            self.userId = author.id
 
     def getFileName(self):
         path = urlparse(self.url).path

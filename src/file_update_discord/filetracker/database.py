@@ -1,5 +1,6 @@
 import sqlite3
 
+import validators
 from file_update_discord.utils.config_reader import ConfigReader
 
 dbConfig = ConfigReader().config.get("filetracker")
@@ -13,7 +14,7 @@ class Database(object):
         self.cursor = self.connection.cursor()
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS files "
-            "(hash TEXT, url TEXT, fileName TEXT, userId INT)"
+            "(hash TEXT PRIMARY KEY, url TEXT, fileName TEXT, userId INT)"
         )
 
     def add_file(self, file):
@@ -24,6 +25,10 @@ class Database(object):
         self.connection.commit()
 
     def file_exists(self, url):
+        try:
+            validators.url(url)
+        except validators.ValidationFailure:
+            raise ValueError(f"Invalid URL: {url}")
         self.cursor.execute("SELECT * FROM files WHERE url=?", [url])
         return self.cursor.fetchone() is not None
 
