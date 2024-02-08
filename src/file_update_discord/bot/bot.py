@@ -3,7 +3,7 @@ import os
 import discord
 import file_update_discord.filetracker.database as db
 import file_update_discord.filetracker.filetracker as ft
-from discord.ext import commands
+from discord.ext import commands, tasks
 from file_update_discord.utils.config_reader import ConfigReader, load_env
 
 config = ConfigReader()
@@ -49,6 +49,15 @@ async def untrack(ctx, url):
         return
 
 
+@tasks.loop(seconds=3600)
+async def refresh_all_files_hash():
+    dbSession.update_all_files_hash()
+
+
 if __name__ == "__main__":
     load_env()
-    bot.run(os.getenv("SECRET_KEY"))
+    secret_key = os.getenv("SECRET_KEY")
+    if secret_key is not None:
+        bot.run(secret_key)
+    else:
+        print("SECRET_KEY not found in environment variables")
