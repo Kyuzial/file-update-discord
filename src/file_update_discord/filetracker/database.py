@@ -45,6 +45,19 @@ class Database(object):
         else:
             self.cursor.execute("SELECT userId FROM files WHERE url=?", [url])
             return self.cursor.fetchone()[0]
+        
+    def update_all_files_hash(self):
+        self.cursor.execute("SELECT url FROM files")
+        urls = self.cursor.fetchall()
+        for url in urls:
+            self.cursor.execute("SELECT * FROM files WHERE url=?", [url[0]])
+            file = self.cursor.fetchone()
+            self.cursor.execute(
+                "UPDATE files SET hash=? WHERE url=?", [file[0], file[1]]
+            )
+            self.connection.commit()
+
+
 
     def __enter__(self):
         return self

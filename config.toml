@@ -3,3 +3,4 @@ prefix = "!"
 
 [filetracker]
 dbPath = "filetracker.db"
+delay = 3600
