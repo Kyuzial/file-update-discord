@@ -27,7 +27,7 @@ async def track(ctx, url):
             await ctx.send(f"URL {url} is already tracked")
             return
         else:
-            file = ft.File(url, ctx.author)
+            file = ft.File(url, ctx.author.id)
             dbSession.add_file(file)
     except ValueError:
         await ctx.send(f"Invalid URL: {url}")
@@ -51,7 +51,18 @@ async def untrack(ctx, url):
 
 @tasks.loop(seconds=3600)
 async def refresh_all_files_hash():
-    dbSession.update_all_files_hash()
+    updated = dbSession.update_all_files_hash()
+    for item in updated:
+        print(item)
+        await bot.get_user(item[3]).send(
+            f"File {item[2]} has been updated at {item[1]}\nNew hash: {item[0]}"
+        )
+    dbSession.clear_updates()
+
+
+@bot.event
+async def on_ready():
+    refresh_all_files_hash.start()
 
 
 if __name__ == "__main__":
