@@ -25,12 +25,11 @@ class Database(object):
         self.connection.commit()
 
     def file_exists(self, url):
-        try:
-            validators.url(url)
-        except validators.ValidationFailure:
+        if not validators.url(url):
             raise ValueError(f"Invalid URL: {url}")
-        self.cursor.execute("SELECT * FROM files WHERE url=?", [url])
-        return self.cursor.fetchone() is not None
+        else:
+            self.cursor.execute("SELECT * FROM files WHERE url=?", [url])
+            return self.cursor.fetchone() is not None
 
     def remove_file(self, url):
         if not self.file_exists(url):
@@ -45,7 +44,7 @@ class Database(object):
         else:
             self.cursor.execute("SELECT userId FROM files WHERE url=?", [url])
             return self.cursor.fetchone()[0]
-        
+
     def update_all_files_hash(self):
         self.cursor.execute("SELECT url FROM files")
         urls = self.cursor.fetchall()
@@ -56,8 +55,6 @@ class Database(object):
                 "UPDATE files SET hash=? WHERE url=?", [file[0], file[1]]
             )
             self.connection.commit()
-
-
 
     def __enter__(self):
         return self
